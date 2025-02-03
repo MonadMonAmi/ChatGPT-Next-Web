@@ -196,6 +196,7 @@ export class ChatGPTApi implements LLMApi {
 
     const isDalle3 = _isDalle3(options.config.model);
     const isO1 = options.config.model.startsWith("o1");
+    const isO1Exact = options.config.model === "o1";
     const isO3 = options.config.model.startsWith("o3");
     if (isDalle3) {
       const prompt = getMessageTextContent(
@@ -218,19 +219,19 @@ export class ChatGPTApi implements LLMApi {
         const content = visionModel
           ? await preProcessImageContent(v.content)
           : getMessageTextContent(v);
-        if (!(isO1 && v.role === "system"))
+        if (!((isO1 || isO3) && v.role === "system"))
           messages.push({ role: v.role, content });
       }
 
       // O1 not support image, tools (plugin in ChatGPTNextWeb) and system, stream, logprobs, temperature, top_p, n, presence_penalty, frequency_penalty yet.
       requestPayload = {
         messages,
-        stream: options.config.stream,
+        stream: isO1Exact ? false : options.config.stream,
         model: modelConfig.model,
         temperature: !(isO1 || isO3)? modelConfig.temperature : 1,
-        presence_penalty: !isO1 ? modelConfig.presence_penalty : 0,
-        frequency_penalty: !isO1 ? modelConfig.frequency_penalty : 0,
-        top_p: !isO1 ? modelConfig.top_p : 1,
+        presence_penalty: !(isO1 || isO3) ? modelConfig.presence_penalty : 0,
+        frequency_penalty: !(isO1 || isO3) ? modelConfig.frequency_penalty : 0,
+        top_p: !(isO1 || isO3) ? modelConfig.top_p : 1,
         // max_tokens: Math.max(modelConfig.max_tokens, 1024),
         // Please do not ask me why not send max_tokens, no reason, this param is just shit, I dont want to explain anymore.
       };
