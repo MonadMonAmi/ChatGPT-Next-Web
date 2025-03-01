@@ -477,6 +477,7 @@ const openaiModels = [
   "o1-2024-12-17",
   "o1",
   "o3-mini",
+  "gpt-4.5-preview",
 ];
 
 const googleModels = [
