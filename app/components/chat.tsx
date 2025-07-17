@@ -50,7 +50,7 @@ import McpToolIcon from "../icons/tool.svg";
 import HeadphoneIcon from "../icons/headphone.svg";
 import {
   BOT_HELLO,
-  ChatMessage,
+  ChatMessages,
   createMessage,
   DEFAULT_TOPIC,
   ModelType,
