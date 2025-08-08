@@ -200,7 +200,7 @@ export class ChatGPTApi implements LLMApi {
       options.config.model.startsWith("o1") ||
       options.config.model.startsWith("o3") ||
       options.config.model.startsWith("o4-mini");
-    const isGPT5 = options.config.model.startsWith("gpt5");
+    const isGPT5 = options.config.model.startsWith("gpt-5");
     if (isDalle3) {
       const prompt = getMessageTextContent(
         options.messages.slice(-1)?.pop() as any,
